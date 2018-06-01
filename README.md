@@ -50,4 +50,4 @@ Coming soon...
 | Lua (5.3.2)               | Lua 5.3.4                              |
 | LuaJIT (2.0.4)            | LuaJIT 2.0.4                           |
 | Nim (0.13.0)              | nim 0.16.0                             |
-| PHP7 (7.0.15)             | php 7.1.2 debugger eval code:1:1       |
+| PHP7 (7.0.15)             | php 7.1.2                              |
