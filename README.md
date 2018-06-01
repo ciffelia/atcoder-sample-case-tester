@@ -8,7 +8,8 @@ Detect sample cases on AtCoder and run tests on Wandbox
 
 ## Install
 
-Coming soon...
+1. Install [TamperMonkey](https://tampermonkey.net/) on your browser.
+2. Install script from [here](https://greasyfork.org/ja/scripts/368836-atcoder-sample-case-tester).
 
 ## Limitations
 
