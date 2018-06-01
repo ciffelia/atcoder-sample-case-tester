@@ -1,0 +1,21 @@
+{
+  "name": "atcoder-sample-case-tester",
+  "version": "1.0.0",
+  "description": "Detect sample cases on AtCoder and run tests on Wandbox",
+  "main": "src/index.js",
+  "repository": "https://github.com/prince0203/atcoder-sample-case-tester.git",
+  "author": "prince",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "test": "standard",
+    "build": "rollup -c"
+  },
+  "devDependencies": {
+    "rollup": "^0.59.4",
+    "standard": "^11.0.1"
+  },
+  "standard": {
+    "globals": ["$", "fetch", "btoa"]
+  }
+}
