@@ -4,7 +4,7 @@
 [![Greenkeeper badge](https://badges.greenkeeper.io/prince0203/atcoder-sample-case-tester.svg)](https://greenkeeper.io/)
 [![MIT License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat)](LICENSE)  
 Detect sample cases on AtCoder and run tests on Wandbox
-![screenshot](img/screenshot.gif)
+![screenshot](https://github.com/prince0203/atcoder-sample-case-tester/raw/master/img/screenshot.gif)
 
 ## Install
 
