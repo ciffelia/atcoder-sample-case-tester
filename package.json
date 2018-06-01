@@ -1,11 +1,13 @@
 {
   "name": "atcoder-sample-case-tester",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Detect sample cases on AtCoder and run tests on Wandbox",
   "main": "src/index.js",
-  "repository": "https://github.com/prince0203/atcoder-sample-case-tester.git",
-  "author": "prince",
+  "repository": "github:prince0203/atcoder-sample-case-tester",
+  "author": "prince <mc.prince.0203@gmail.com> (https://ciffelia.com/)",
   "license": "MIT",
+  "homepage": "https://github.com/prince0203/atcoder-sample-case-tester#readme",
+  "bugs": "https://github.com/prince0203/atcoder-sample-case-tester/issues",
   "private": true,
   "scripts": {
     "test": "standard",

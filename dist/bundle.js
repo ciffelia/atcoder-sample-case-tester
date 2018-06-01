@@ -1,10 +1,14 @@
 // ==UserScript==
 // @name         AtCoder Sample Case Tester
 // @namespace    https://ciffelia.com/
-// @version      1.0.0
+// @version      1.0.1
 // @description  Detect sample cases on AtCoder and run tests on Wandbox
-// @author       prince
+// @author       prince <mc.prince.0203@gmail.com> (https://ciffelia.com/)
+// @license      MIT
+// @homepage     https://github.com/prince0203/atcoder-sample-case-tester#readme
+// @supportURL   https://github.com/prince0203/atcoder-sample-case-tester/issues
 // @match        https://beta.atcoder.jp/contests/*/tasks/*
+// @run-at       document-end
 // ==/UserScript==
 
 (function () {

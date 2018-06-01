@@ -7,7 +7,11 @@ const banner = `
 // @version      ${packageJson.version}
 // @description  ${packageJson.description}
 // @author       ${packageJson.author}
+// @license      ${packageJson.license}
+// @homepage     ${packageJson.homepage}
+// @supportURL   ${packageJson.bugs}
 // @match        https://beta.atcoder.jp/contests/*/tasks/*
+// @run-at       document-end
 // ==/UserScript==
 `.trim() + '\n'
 
