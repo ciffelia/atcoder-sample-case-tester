@@ -16,7 +16,7 @@ Detect sample cases on AtCoder and run tests on Wandbox
 ## Limitations
 
 - Only works on [beta.atcoder.jp](https://beta.atcoder.jp/)
-- Some languages are not supported (Java, Node.js, etc.)
+- Some languages are not supported (Node.js, etc.)
 
 ## Supported languages
 
@@ -34,6 +34,8 @@ Detect sample cases on AtCoder and run tests on Wandbox
 | D (GDC 4.9.4)             | gdc HEAD 9.0.0 20180528 (experimental) |
 | Go (1.6)                  | go 1.6.3                               |
 | Haskell (GHC 7.10.3)      | ghc 7.10.3                             |
+| Java7 (OpenJDK 1.7.0)     | OpenJDK jdk7u121-b00                   |
+| Java8 (OpenJDK 1.8.0)     | OpenJDK jdk8u121-b13                   |
 | OCaml (4.02.3)            | ocaml 4.04.0                           |
 | Pascal (FPC 2.6.2)        | Free Pascal 2.6.2                      |
 | Perl (v5.18.2)            | perl 5.18.4                            |

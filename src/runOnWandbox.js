@@ -1,5 +1,9 @@
 // Wandboxで実行
 const runOnWandbox = async (language, sourceCode, input) => {
+  if (language.atCoderName === 'Java7 (OpenJDK 1.7.0)' || language.atCoderName === 'Java8 (OpenJDK 1.8.0)') {
+    sourceCode = sourceCode.replace(/public\s+class\s+Main/g, 'class Main')
+  }
+
   const params = {
     code: sourceCode,
     stdin: input,

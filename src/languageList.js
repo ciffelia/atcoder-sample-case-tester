@@ -122,26 +122,24 @@ const languageList = {
       }
     }
   },
-  // AtCoderのソースをWandboxでそのまま実行するとCEになる
-  // 解決策がわからないのでコメントアウト
-  // '3015': {
-  //   atCoderName: 'Java7 (OpenJDK 1.7.0)',
-  //   wandbox: {
-  //     name: 'OpenJDK jdk7u121-b00',
-  //     params: {
-  //       'compiler': 'openjdk-jdk7u121-b00'
-  //     }
-  //   }
-  // },
-  // '3016': {
-  //   atCoderName: 'Java8 (OpenJDK 1.8.0)',
-  //   wandbox: {
-  //     name: 'OpenJDK jdk8u121-b13',
-  //     params: {
-  //       'compiler': 'openjdk-jdk8u121-b13'
-  //     }
-  //   }
-  // },
+  '3015': {
+    atCoderName: 'Java7 (OpenJDK 1.7.0)',
+    wandbox: {
+      name: 'OpenJDK jdk7u121-b00',
+      params: {
+        'compiler': 'openjdk-jdk7u121-b00'
+      }
+    }
+  },
+  '3016': {
+    atCoderName: 'Java8 (OpenJDK 1.8.0)',
+    wandbox: {
+      name: 'OpenJDK jdk8u121-b13',
+      params: {
+        'compiler': 'openjdk-jdk8u121-b13'
+      }
+    }
+  },
   // AtCoderで使う /dev/stdin はWandboxでは使えない
   // 解決策がわからないのでコメントアウト
   // '3017': {
