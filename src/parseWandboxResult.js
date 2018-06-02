@@ -28,17 +28,11 @@ const parseWandboxResult = (sampleCase, wandboxResult) => {
       description: 'Return code was not zero',
       color: 'warning'
     }
-  } else if (programOutput === sampleOutput) {
+  } else if (programOutput.trim() === sampleOutput.trim()) {
     return {
       status: 'AC',
       description: 'Accepted',
       color: 'success'
-    }
-  } else if (programOutput.trim() === sampleOutput.trim()) {
-    return {
-      status: 'WA (Whitespace Error)',
-      description: 'Answer is correct, but trailing linebreak was missing or extra spaces were found (space, tab, no-break space, LF, CR, etc.)',
-      color: 'danger'
     }
   } else {
     return {

@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         AtCoder Sample Case Tester
 // @namespace    https://ciffelia.com/
-// @version      1.1.0
+// @version      1.1.1
 // @description  Detect sample cases on AtCoder and run tests on Wandbox
 // @author       prince <mc.prince.0203@gmail.com> (https://ciffelia.com/)
 // @license      MIT
@@ -477,17 +477,11 @@
         description: 'Return code was not zero',
         color: 'warning'
       }
-    } else if (programOutput === sampleOutput) {
+    } else if (programOutput.trim() === sampleOutput.trim()) {
       return {
         status: 'AC',
         description: 'Accepted',
         color: 'success'
-      }
-    } else if (programOutput.trim() === sampleOutput.trim()) {
-      return {
-        status: 'WA (Whitespace Error)',
-        description: 'Answer is correct, but trailing linebreak was missing or extra spaces were found (space, tab, no-break space, LF, CR, etc.)',
-        color: 'danger'
       }
     } else {
       return {
