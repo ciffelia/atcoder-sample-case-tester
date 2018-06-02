@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         AtCoder Sample Case Tester
 // @namespace    https://ciffelia.com/
-// @version      1.0.1
+// @version      1.0.2
 // @description  Detect sample cases on AtCoder and run tests on Wandbox
 // @author       prince <mc.prince.0203@gmail.com> (https://ciffelia.com/)
 // @license      MIT
@@ -30,7 +30,7 @@
 
   // サンプルケースを検出
   const detectSampleCases = () => {
-    const sampleElms = $('.lang-en pre[id^="pre-sample"]');
+    const sampleElms = $('.lang-ja pre[id^="pre-sample"]');
     if (sampleElms.length % 2 !== 0) {
       throw new Error('sampleElms.length % 2 !== 0')
     }

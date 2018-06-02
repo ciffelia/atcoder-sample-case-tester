@@ -1,6 +1,6 @@
 // サンプルケースを検出
 const detectSampleCases = () => {
-  const sampleElms = $('.lang-en pre[id^="pre-sample"]')
+  const sampleElms = $('.lang-ja pre[id^="pre-sample"]')
   if (sampleElms.length % 2 !== 0) {
     throw new Error('sampleElms.length % 2 !== 0')
   }
