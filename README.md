@@ -6,6 +6,8 @@
 Detect sample cases on AtCoder and run tests on Wandbox
 ![screenshot](https://github.com/prince0203/atcoder-sample-case-tester/raw/master/img/screenshot.gif)
 
+**日本語版のREADMEは[こちら](https://qiita.com/prince_0203/items/b9cd2986dd31d76899d0)をご覧ください。**
+
 ## Install
 
 1. Install [TamperMonkey](https://tampermonkey.net/) on your browser.
