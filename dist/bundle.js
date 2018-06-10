@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         AtCoder Sample Case Tester
 // @namespace    https://ciffelia.com/
-// @version      1.1.1
+// @version      2.0.0
 // @description  Detect sample cases on AtCoder and run tests on Wandbox
 // @author       prince <mc.prince.0203@gmail.com> (https://ciffelia.com/)
 // @license      MIT
@@ -14,50 +14,90 @@
 (function () {
   'use strict';
 
-  // アラートを表示
-  const displayAlert = (color, content) => {
-    $('#wandboxAlert').remove();
-    $(`
+  class TestButton {
+    constructor () {
+      this.btnElm = $(`
+      <button type="button" class="btn btn-info" id="testOnWandbox" style="margin-right: 5px">
+        Test sample cases on Wandbox
+      </button>
+    `.trim());
+    }
+
+    setListener (listener) {
+      this.btnElm.click(listener);
+    }
+
+    insert () {
+      this.btnElm.insertBefore('#submit');
+    }
+
+    disable () {
+      this.btnElm.addClass('disabled');
+    }
+
+    enable () {
+      this.btnElm.removeClass('disabled');
+    }
+  }
+
+  class Alert {
+    constructor (color, content) {
+      this.alertElm = $(`
       <div role="alert" class="alert alert-${color} alert-dismissible" id="wandboxAlert">
         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         ${content}
       </div>
-  `.trim()).insertAfter('.form-horizontal');
-  };
-
-  const displayInfo = message => displayAlert('info', message);
-  const displayError = err => displayAlert('warning', `<strong>Error!</strong> ${err.message}`);
-
-  // サンプルケースを検出
-  const detectSampleCases = () => {
-    const sampleElms = $('.lang-ja pre[id^="pre-sample"]');
-    if (sampleElms.length % 2 !== 0) {
-      throw new Error('sampleElms.length % 2 !== 0')
+    `.trim());
     }
 
-    let sampleCases = [];
-    for (let i = 0; i < sampleElms.length; i += 2) {
-      sampleCases.push({
-        input: sampleElms.get(i).innerText,
-        output: sampleElms.get(i + 1).innerText
-      });
+    show () {
+      $('#wandboxAlert').remove();
+      this.alertElm.insertAfter('.form-horizontal');
+    }
+  }
+
+  class InfoAlert extends Alert {
+    constructor (message) {
+      super('info', message);
+    }
+  }
+
+  class ErrorAlert extends Alert {
+    constructor (err) {
+      super('warning', `<strong>Error!</strong> ${err.message}`);
+    }
+  }
+
+  class SampleCaseExtractor {
+    // サンプルケースが記述されたpre要素のリストを取得
+    getSampleCaseElms () {
+      const sampleCaseElms = $('.lang-ja pre[id^="pre-sample"]');
+      if (sampleCaseElms.length % 2 !== 0) {
+        throw new Error('sampleCaseElms.length % 2 !== 0')
+      }
+
+      return sampleCaseElms
     }
 
-    if (sampleCases.length === 0) {
-      throw new Error('sampleCases.length === 0')
-    }
+    // サンプルケースの一覧を取得
+    getSampleCases () {
+      const sampleCaseElms = this.getSampleCaseElms();
 
-    return sampleCases
-  };
+      let sampleCases = [];
+      for (let i = 0; i < sampleCaseElms.length; i += 2) {
+        sampleCases.push({
+          input: sampleCaseElms.get(i).innerText,
+          output: sampleCaseElms.get(i + 1).innerText
+        });
+      }
 
-  // 入力されたソースコードを取得
-  const getSourceCode = () => {
-    if ($('.btn-toggle-editor').hasClass('active')) {
-      return $('.plain-textarea').val()
-    } else {
-      return $('.editor').data('editor').doc.getValue()
+      if (sampleCases.length === 0) {
+        throw new Error('sampleCases.length === 0')
+      }
+
+      return sampleCases
     }
-  };
+  }
 
   const languageList = {
     '3001': {
@@ -408,16 +448,78 @@
     }
   };
 
-  // 選択された言語のIDを取得
-  const getLanguage = () => {
-    const language = languageList[$('#select-lang select.current').val()];
+  class SubmitForm {
+    // 提出フォームで選択されている言語を取得
+    getLanguage () {
+      const language = languageList[$('#select-lang select.current').val()];
 
-    if (typeof language === 'undefined') {
-      throw new Error('The language is not supported.')
+      if (typeof language === 'undefined') {
+        throw new Error('The language is not supported.')
+      }
+
+      return language
     }
 
-    return language
-  };
+    // 提出フォームに入力されたソースコードを取得
+    getSourceCode () {
+      if ($('.btn-toggle-editor').hasClass('active')) {
+        return $('.plain-textarea').val()
+      } else {
+        return $('.editor').data('editor').doc.getValue()
+      }
+    }
+  }
+
+  class ResultTable {
+    constructor (sampleCases) {
+      this.judgingGifElm = $('<img src="/public/img/icon/waiting.gif" />');
+
+      this.tableElm = $('<table class="table table-bordered table-striped th-center" id="sampleTestResult" />');
+
+      for (const i of sampleCases.keys()) {
+        $(`
+        <tr>
+          <td class="text-center">
+            #${i}
+          </td>
+          <td class="text-center">
+            <span class="label label-default" aria-hidden="true" data-toggle="tooltip" data-original-title="ジャッジ中" id="wandbox-result-${i}">WJ</span>
+          </td>
+          <td class="text-center">
+            <a target="blank" rel="noopener" role="button" class="btn btn-info btn-xs disabled" id="wandbox-detail-${i}">More</a>
+          </td>
+        </tr>
+      `.trim()).appendTo(this.tableElm);
+      }
+
+      this.tableElm.find('[data-toggle="tooltip"]').tooltip();
+    }
+
+    show () {
+      $('#sampleTestResult').remove();
+      $('#wandboxAlert').after(this.tableElm);
+    }
+
+    setJudgingGif (i) {
+      $('#wandbox-result-' + i).after(this.judgingGifElm);
+    }
+
+    removeJudgingGif () {
+      this.judgingGifElm.remove();
+    }
+
+    addResult (i, result, detail) {
+      $('#wandbox-result-' + i)
+        .text(result.status)
+        .attr('data-original-title', result.description)
+        .removeClass('label-default')
+        .addClass('label-' + result.color);
+
+      $('#wandbox-detail-' + i)
+        .attr('href', 'data:application/json;base64,' + btoa(JSON.stringify(detail, null, '  ')))
+        .removeClass('disabled');
+    }
+  }
 
   // Wandboxで実行
   const runOnWandbox = async (language, sourceCode, input) => {
@@ -492,100 +594,56 @@
     }
   };
 
-  // 結果の表を表示
-  const displayResultTable = sampleCases => {
-    $('#sampleTestResult').remove();
-
-    const tableElm = $('<table class="table table-bordered table-striped th-center" id="sampleTestResult" />');
-
-    for (const i of sampleCases.keys()) {
-      $(`
-      <tr>
-        <td class="text-center">
-          #${i}
-        </td>
-        <td class="text-center">
-          <span class="label label-default" aria-hidden="true" data-toggle="tooltip" data-original-title="ジャッジ中" id="wandbox-result-${i}">WJ</span>
-        </td>
-        <td class="text-center">
-          <a target="blank" rel="noopener" role="button" class="btn btn-info btn-xs disabled" id="wandbox-detail-${i}">More</a>
-        </td>
-      </tr>
-    `.trim()).appendTo(tableElm);
-    }
-
-    tableElm.find('[data-toggle="tooltip"]').tooltip();
-    tableElm.insertAfter('.form-horizontal');
-  };
-
-  // 実行結果を表に反映
-  const updateResultTable = (resElm, detailElm, result, detail) => {
-    resElm
-      .text(result.status)
-      .attr('data-original-title', result.description)
-      .removeClass('label-default')
-      .addClass('label-' + result.color);
-
-    detailElm
-      .attr('href', 'data:application/json;base64,' + btoa(JSON.stringify(detail, null, '  ')))
-      .removeClass('disabled');
-  };
+  const testButton = new TestButton();
 
   const main = async () => {
-    const execButtonElm = $('#testOnWandbox');
-    execButtonElm.addClass('disabled');
-
-    const loadingGifElm = $('<img src="/public/img/icon/waiting.gif" />');
+    testButton.disable();
 
     let sourceCode, sampleCases, language;
     try {
-      sourceCode = getSourceCode();
-      sampleCases = detectSampleCases();
-      language = getLanguage();
+      const sampleCaseExtractor = new SampleCaseExtractor();
+      sampleCases = sampleCaseExtractor.getSampleCases();
+
+      const submitForm = new SubmitForm();
+      language = submitForm.getLanguage();
+      sourceCode = submitForm.getSourceCode();
     } catch (err) {
-      displayError(err);
-      execButtonElm.removeClass('disabled');
+      new ErrorAlert(err).show();
+      testButton.enable();
       return
     }
 
-    displayResultTable(sampleCases);
-
     const langMoreUrl = 'data:application/json;base64,' + btoa(JSON.stringify(language, null, '  '));
-    displayInfo(`
+    new InfoAlert(`
     Running on <strong>${language.wandbox.name}</strong> on Wandbox.
     <a href="${langMoreUrl}" target="blank" rel="noopener" class="alert-link">More</a>
-  `);
+  `).show();
+
+    const resultTable = new ResultTable(sampleCases);
+    resultTable.show();
 
     for (const [i, sampleCase] of sampleCases.entries()) {
-      const resElm = $('#wandbox-result-' + i);
-      const detailElm = $('#wandbox-detail-' + i);
-
-      loadingGifElm.insertAfter(resElm);
+      resultTable.setJudgingGif(i);
 
       try {
         const wandboxResult = await runOnWandbox(language, sourceCode, sampleCase.input);
         const result = parseWandboxResult(sampleCase, wandboxResult);
-        updateResultTable(resElm, detailElm, result, wandboxResult);
+        resultTable.addResult(i, result, wandboxResult);
       } catch (err) {
-        updateResultTable(resElm, detailElm, {
+        resultTable.addResult(i, {
           status: 'IE',
           description: 'Internal Error',
           color: 'warning'
         }, err);
       }
 
-      loadingGifElm.remove();
+      resultTable.removeJudgingGif();
     }
 
-    execButtonElm.removeClass('disabled');
+    testButton.enable();
   };
 
-  $(`
-  <button type="button" class="btn btn-info" id="testOnWandbox" style="margin-right: 5px">
-    Test sample cases on Wandbox
-  </button>
-`.trim())
-    .insertBefore('#submit')
-    .click(main);
+  testButton.setListener(main);
+  testButton.insert();
 
 }());

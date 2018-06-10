@@ -1,65 +1,59 @@
-import { displayInfo, displayError } from './displayAlert'
-import detectSampleCases from './detectSampleCases'
-import getSourceCode from './getSourceCode'
-import getLanguage from './getLanguage'
+import TestButton from './TestButton'
+import { InfoAlert, ErrorAlert } from './Alert'
+import SampleCaseExtractor from './SampleCaseExtractor'
+import SubmitForm from './SubmitForm'
+import ResultTable from './ResultTable'
 import runOnWandbox from './runOnWandbox'
 import parseWandboxResult from './parseWandboxResult'
-import displayResultTable from './displayResultTable'
-import updateResultTable from './updateResultTable'
+
+const testButton = new TestButton()
 
 const main = async () => {
-  const execButtonElm = $('#testOnWandbox')
-  execButtonElm.addClass('disabled')
-
-  const loadingGifElm = $('<img src="/public/img/icon/waiting.gif" />')
+  testButton.disable()
 
   let sourceCode, sampleCases, language
   try {
-    sourceCode = getSourceCode()
-    sampleCases = detectSampleCases()
-    language = getLanguage()
+    const sampleCaseExtractor = new SampleCaseExtractor()
+    sampleCases = sampleCaseExtractor.getSampleCases()
+
+    const submitForm = new SubmitForm()
+    language = submitForm.getLanguage()
+    sourceCode = submitForm.getSourceCode()
   } catch (err) {
-    displayError(err)
-    execButtonElm.removeClass('disabled')
+    new ErrorAlert(err).show()
+    testButton.enable()
     return
   }
 
-  displayResultTable(sampleCases)
-
   const langMoreUrl = 'data:application/json;base64,' + btoa(JSON.stringify(language, null, '  '))
-  displayInfo(`
+  new InfoAlert(`
     Running on <strong>${language.wandbox.name}</strong> on Wandbox.
     <a href="${langMoreUrl}" target="blank" rel="noopener" class="alert-link">More</a>
-  `)
+  `).show()
+
+  const resultTable = new ResultTable(sampleCases)
+  resultTable.show()
 
   for (const [i, sampleCase] of sampleCases.entries()) {
-    const resElm = $('#wandbox-result-' + i)
-    const detailElm = $('#wandbox-detail-' + i)
-
-    loadingGifElm.insertAfter(resElm)
+    resultTable.setJudgingGif(i)
 
     try {
       const wandboxResult = await runOnWandbox(language, sourceCode, sampleCase.input)
       const result = parseWandboxResult(sampleCase, wandboxResult)
-      updateResultTable(resElm, detailElm, result, wandboxResult)
+      resultTable.addResult(i, result, wandboxResult)
     } catch (err) {
-      updateResultTable(resElm, detailElm, {
+      resultTable.addResult(i, {
         status: 'IE',
         description: 'Internal Error',
         color: 'warning'
       }, err)
     }
 
-    loadingGifElm.remove()
+    resultTable.removeJudgingGif()
   }
 
-  execButtonElm.removeClass('disabled')
+  testButton.enable()
 }
 
-$(`
-  <button type="button" class="btn btn-info" id="testOnWandbox" style="margin-right: 5px">
-    Test sample cases on Wandbox
-  </button>
-`.trim())
-  .insertBefore('#submit')
-  .click(main)
+testButton.setListener(main)
+testButton.insert()
