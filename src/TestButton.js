@@ -1,8 +1,8 @@
 class TestButton {
   constructor () {
     this.btnElm = $(`
-      <button type="button" class="btn btn-info" id="testOnWandbox" style="margin-right: 5px">
-        Test sample cases on Wandbox
+      <button type="button" class="btn btn-info" style="margin-right: 5px">
+        Test sample cases on AtCoder's custom test
       </button>
     `.trim())
   }

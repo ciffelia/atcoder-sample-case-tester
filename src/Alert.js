@@ -1,7 +1,7 @@
 class Alert {
   constructor (color, content) {
     this.alertElm = $(`
-      <div role="alert" class="alert alert-${color} alert-dismissible" id="wandboxAlert">
+      <div role="alert" class="alert alert-${color} alert-dismissible" id="customTestAlert">
         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         ${content}
       </div>
@@ -9,7 +9,7 @@ class Alert {
   }
 
   show () {
-    $('#wandboxAlert').remove()
+    $('#customTestAlert').remove()
     this.alertElm.insertAfter('.form-horizontal')
   }
 }

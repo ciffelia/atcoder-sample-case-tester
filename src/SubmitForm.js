@@ -1,15 +1,7 @@
-import languageList from './languageList'
-
 class SubmitForm {
   // 提出フォームで選択されている言語を取得
-  getLanguage () {
-    const language = languageList[$('#select-lang select.current').val()]
-
-    if (typeof language === 'undefined') {
-      throw new Error('The language is not supported.')
-    }
-
-    return language
+  getLanguageId () {
+    return $('#select-lang select.current').val()
   }
 
   // 提出フォームに入力されたソースコードを取得

@@ -1,7 +1,7 @@
 {
   "name": "atcoder-sample-case-tester",
-  "version": "2.0.0",
-  "description": "Detect sample cases on AtCoder and run tests on Wandbox",
+  "version": "3.0.0",
+  "description": "Detect sample cases on AtCoder and run custom tests",
   "main": "src/index.js",
   "repository": "github:prince0203/atcoder-sample-case-tester",
   "author": "prince <mc.prince.0203@gmail.com> (https://ciffelia.com/)",
