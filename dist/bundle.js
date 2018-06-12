@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         AtCoder Sample Case Tester
 // @namespace    https://ciffelia.com/
-// @version      3.0.0
+// @version      3.0.1
 // @description  Detect sample cases on AtCoder and run custom tests
 // @author       prince <mc.prince.0203@gmail.com> (https://ciffelia.com/)
 // @license      MIT
@@ -273,6 +273,9 @@
     }
 
     addResult (i, result, detail) {
+      const detailJson = JSON.stringify(detail, null, '  ');
+      const detailJsonBlob = new Blob([detailJson], { type: 'application/json' });
+
       $('#customTest-result-' + i)
         .text(result.status)
         .attr('data-original-title', result.description)
@@ -280,7 +283,7 @@
         .addClass('label-' + result.color);
 
       $('#customTest-detail-' + i)
-        .attr('href', 'data:application/json;base64,' + btoa(JSON.stringify(detail, null, '  ')))
+        .attr('href', URL.createObjectURL(detailJsonBlob))
         .removeClass('disabled');
     }
   }

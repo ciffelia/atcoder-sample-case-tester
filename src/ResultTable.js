@@ -37,6 +37,9 @@ class ResultTable {
   }
 
   addResult (i, result, detail) {
+    const detailJson = JSON.stringify(detail, null, '  ')
+    const detailJsonBlob = new Blob([detailJson], { type: 'application/json' })
+
     $('#customTest-result-' + i)
       .text(result.status)
       .attr('data-original-title', result.description)
@@ -44,7 +47,7 @@ class ResultTable {
       .addClass('label-' + result.color)
 
     $('#customTest-detail-' + i)
-      .attr('href', 'data:application/json;base64,' + btoa(JSON.stringify(detail, null, '  ')))
+      .attr('href', URL.createObjectURL(detailJsonBlob))
       .removeClass('disabled')
   }
 }
