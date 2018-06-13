@@ -8,20 +8,30 @@ import ResultTable from './ResultTable'
 
 const testButton = new TestButton()
 
+let sampleCases = null
+try {
+  const sampleCaseExtractor = new SampleCaseExtractor()
+  sampleCases = sampleCaseExtractor.getSampleCases()
+} catch (err) {
+  new ErrorAlert(err, 'Failed to detect sample cases').show()
+  testButton.disable()
+}
+
 const main = async () => {
   testButton.disable()
 
-  let sourceCode, sampleCases, languageId
+  let sourceCode, languageId
   try {
-    const sampleCaseExtractor = new SampleCaseExtractor()
-    sampleCases = sampleCaseExtractor.getSampleCases()
-
     const submitForm = new SubmitForm()
     languageId = submitForm.getLanguageId()
     sourceCode = submitForm.getSourceCode()
+
+    if (sourceCode.trim() === '') {
+      throw new Error('The source code must not be empty.')
+    }
   } catch (err) {
     console.error(err)
-    new ErrorAlert(err).show()
+    new ErrorAlert(err, 'Failed to detect the language and the source code').show()
     testButton.enable()
     return
   }
@@ -53,5 +63,7 @@ const main = async () => {
   testButton.enable()
 }
 
-testButton.setListener(main)
+if (sampleCases !== null) {
+  testButton.setListener(main)
+}
 testButton.insert()

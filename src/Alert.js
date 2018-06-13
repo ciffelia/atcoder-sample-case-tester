@@ -21,8 +21,8 @@ class InfoAlert extends Alert {
 }
 
 class ErrorAlert extends Alert {
-  constructor (err) {
-    super('warning', `<strong>Error!</strong> ${err.message}`)
+  constructor (err, message = 'Error') {
+    super('warning', `<strong>${message}:</strong> ${err.message}`)
   }
 }
 
