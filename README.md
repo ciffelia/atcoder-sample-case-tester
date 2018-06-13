@@ -16,3 +16,4 @@ Detect sample cases on AtCoder and run custom tests
 ## Limitations
 
 - Only works on [beta.atcoder.jp](https://beta.atcoder.jp/)
+- Does not support interactive tasks.
