@@ -4,23 +4,50 @@ class ResultTable {
 
     this.tableElm = $('<table class="table table-bordered table-striped th-center" id="sampleTestResult" />')
 
+    const theadElm = $(`
+      <thead>
+        <tr>
+          <th />
+          <th>Sample</th>
+          <th>Status</th>
+          <th>Exit Code</a></th>
+          <th>Exec Time</a></th>
+          <th>Memory</a></th>
+          <th />
+        </tr>
+      </thead>
+    `.trim())
+
+    const tbodyElm = $('<tbody />')
+
     for (const i of sampleCases.keys()) {
       $(`
         <tr>
           <td class="text-center">
-            #${i}
+            #${i + 1}
           </td>
           <td class="text-center">
             <span class="label label-default" aria-hidden="true" data-toggle="tooltip" data-original-title="ジャッジ中" id="customTest-result-${i}">WJ</span>
           </td>
           <td class="text-center">
+            <span id="customTest-exitCode-${i}">-</span>
+          </td>
+          <td class="text-center">
+            <span id="customTest-execTime-${i}">-</span>
+          </td>
+          <td class="text-center">
+            <span id="customTest-memory-${i}">-</span>
+          </td>
+          <td class="text-center">
             <a target="blank" rel="noopener" role="button" class="btn btn-info btn-xs disabled" id="customTest-detail-${i}">More</a>
           </td>
         </tr>
-      `.trim()).appendTo(this.tableElm)
+      `.trim()).appendTo(tbodyElm)
     }
 
-    this.tableElm.find('[data-toggle="tooltip"]').tooltip()
+    tbodyElm.find('[data-toggle="tooltip"]').tooltip()
+
+    this.tableElm.append(theadElm, tbodyElm)
   }
 
   show () {
