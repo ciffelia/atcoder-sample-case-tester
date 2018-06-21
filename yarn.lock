@@ -1066,9 +1066,9 @@ rimraf@^2.2.8:
   dependencies:
     glob "^7.0.5"
 
-rollup@^0.60.2:
-  version "0.60.2"
-  resolved "https://registry.yarnpkg.com/rollup/-/rollup-0.60.2.tgz#9635fea3c2f32095c35cda7bfc2816c675de2da4"
+rollup@^0.61.1:
+  version "0.61.1"
+  resolved "https://registry.yarnpkg.com/rollup/-/rollup-0.61.1.tgz#65a12f27c2094e6d643fb9cca6a3057190ecc5fe"
   dependencies:
     "@types/estree" "0.0.39"
     "@types/node" "*"
