@@ -1,6 +1,6 @@
 {
   "name": "atcoder-sample-case-tester",
-  "version": "3.2.0",
+  "version": "3.2.1",
   "description": "Detect sample cases on AtCoder and run custom tests",
   "main": "src/index.js",
   "repository": "github:prince0203/atcoder-sample-case-tester",

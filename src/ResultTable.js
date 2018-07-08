@@ -7,7 +7,6 @@ class ResultTable {
     const theadElm = $(`
       <thead>
         <tr>
-          <th />
           <th>Sample</th>
           <th>Status</th>
           <th>Exit Code</a></th>

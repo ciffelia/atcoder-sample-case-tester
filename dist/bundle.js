@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         AtCoder Sample Case Tester
 // @namespace    https://ciffelia.com/
-// @version      3.2.0
+// @version      3.2.1
 // @description  Detect sample cases on AtCoder and run custom tests
 // @author       prince <mc.prince.0203@gmail.com> (https://ciffelia.com/)
 // @license      MIT
@@ -243,7 +243,6 @@
       const theadElm = $(`
       <thead>
         <tr>
-          <th />
           <th>Sample</th>
           <th>Status</th>
           <th>Exit Code</a></th>
